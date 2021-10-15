@@ -32,7 +32,7 @@ module.exports = class BinarySearchTree {
     }
   }
   has(data) {
-    return this.find(data) ? true : false
+    return !!this.find(data)
   }
   find(data) {
     let x = this.leaves
