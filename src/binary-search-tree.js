@@ -12,56 +12,55 @@ module.exports = class BinarySearchTree {
   root() {
     return this.leaves
   }
-
   add(data) {
-let x = this.leaves
-    if (!x) {
-      x = new Node()
-    } else {
-      while (x) {
-        if (data < x.data) {
-          if (x.left) {
-            x = x.left
-          } else {
-            x.left = new Node(data)
-            break
-          }
-        }
-        if (data > x.data) {
-          if (x.right) {
-            x = x.right
-          } else {
-            x.right = new Node (data)
-            break
-          }}}}}
+    this.leaves = addNodes(this.leaves, data)
+    function addNodes(node, data) {
+      if (!node) {
+        return new Node(data)
+      }
+      if (node.data === data) {
+        return node
+      }
+      if (data < node.data) {
+        node.left = addNodes(node.left, data)
+      } else {
+        node.right = addNodes(node.right, data)
+      }
+      return node}}
   has(data) {
     return this.find( data ) ? true : false
   }
-
-  find(data) {
+    find(data) {
     let x = this.leaves
     const findData = ( node, data ) => {
       if ( !node ) return null
       if ( node.data === data ) return node
       return node.data > data
           ? findData( node.left, data )
-          : findData (node.right, data )
-    }
-
+          : findData (node.right, data )}
     return findData ( x, data )
-
   }
-
   remove(data) {
 
   }
 
   min() {
-
+    let x = this.leaves.left
+    let min = this.leaves.left
+    while (x){
+      min = x.data
+      x = x.left
+    }
+    return min
   }
 
   max() {
-
+    let x = this.leaves.left
+    let max = this.leaves.left
+    while (x) {
+      max = x.data
+      x = x.left
+    }
+    return max
   }
-
 }
