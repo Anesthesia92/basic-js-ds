@@ -12,8 +12,10 @@ module.exports = class BinarySearchTree {
   root() {
     return this.leaves
   }
+
   add(data) {
     this.leaves = addNodes(this.leaves, data)
+
     function addNodes(node, data) {
       if (!node) {
         return new Node(data)
@@ -26,48 +28,55 @@ module.exports = class BinarySearchTree {
       } else {
         node.right = addNodes(node.right, data)
       }
-      return node}}
+      return node
+    }
+  }
   has(data) {
-    return this.find( data ) ? true : false
+    return this.find(data) ? true : false
   }
-    find(data) {
+  find(data) {
     let x = this.leaves
-    const findData = ( node, data ) => {
-      if ( !node ) return null
-      if ( node.data === data ) return node
+    const findData = (node, data) => {
+      if (!node) return null
+      if (node.data === data) return node
       return node.data > data
-          ? findData( node.left, data )
-          : findData (node.right, data )}
-    return findData ( x, data )
+          ? findData(node.left, data)
+          : findData(node.right, data)
+    }
+    return findData(x, data)
   }
-  remove(data) {
-    this.root = this.removeNode(this.root, data);
-  }
-  removeNode(node, key)
-  {if(node === null)
-      return null;
-    else if(key < node.data) {
-      node.left = this.removeNode(node.left, key);
-      return node;
-    } else if(key > node.data) {
-      node.right = this.removeNode(node.right, key);
-      return node;
-    } else {
-      if(node.left === null && node.right === null) {
-        node = null;
-        return node;}
-      if(node.left === null)
-      {
-        node = node.right;
-        return node;
-      } else if(node.right === null) {
-        node = node.left;
-        return node;}
-      let aux = this.findMinNode(node.right);
-      node.data = aux.data;
-      node.right = this.removeNode(node.right, aux.data);
-      return node;}
 
+  remove(data) {
+    const removeNodes = function (node, data) {
+      if (node === null) {
+        return null
+      }
+      if (data === node.data) {
+        if (node.left == null && node.right == null) {
+          return null
+        }
+        if (node.left == null) {
+          return node.right;
+        }
+        if (node.right == null) {
+          return node.left;
+        }
+        let Node = node.right;
+        while (Node.left !== null) {
+          Node = Node.left;
+        }
+        node.data = Node.data;
+        node.right = removeNodes(node.right, Node.data);
+        return node;
+      } else if (data < node.data) {
+        node.left = removeNodes(node.left, data);
+        return node;
+      } else {
+        node.right = removeNodes(node.right, data);
+        return node;}
+    }
+    let x = this.leaves
+    x = removeNodes(x, data);
   }
 
   min() {
