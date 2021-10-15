@@ -33,17 +33,22 @@ let x = this.leaves
           } else {
             x.right = new Node (data)
             break
-          }
-        }
-      }
-    }
-  }
-
+          }}}}}
   has(data) {
-    return !!this.find(data)
+    return this.find( data ) ? true : false
   }
 
   find(data) {
+    let x = this.leaves
+    const findData = ( node, data ) => {
+      if ( !node ) return null
+      if ( node.data === data ) return node
+      return node.data > data
+          ? findData( node.left, data )
+          : findData (node.right, data )
+    }
+
+    return findData ( x, data )
 
   }
 
